@@ -56,7 +56,7 @@ def create_model(s = 2, weight_decay = 1e-2):
    
     # Final Classifier
     model.add(Flatten())
-	model.add(Dense(256, activation='relu'))
+    model.add(Dense(256, activation='relu'))
     model.add(Dense(num_classes, activation='softmax'))
 
     return model
