@@ -63,7 +63,7 @@ if __name__ == "__main__":
 	epochs = 25
 	train = {}
 
-	plot_model(model, to_file='fashion_result.png')
+	#plot_model(model, to_file='fashion_result.png')
 	
 	# First training for 50 epochs - (0-50)
 	opt_adm = keras.optimizers.Adadelta()
