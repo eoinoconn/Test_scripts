@@ -27,8 +27,14 @@ num_classes = 10
 y_train = np_utils.to_categorical(y_train,num_classes)
 y_test = np_utils.to_categorical(y_test,num_classes)
 
-
-
+# Data augmentation
+datagen = ImageDataGenerator(
+    rotation_range=15,
+    width_shift_range=0.1,
+    height_shift_range=0.1,
+    horizontal_flip=True
+    )
+datagen.fit(x_train)
 
 # Define Model architecture
 def create_model(s = 2, weight_decay = 1e-2):
