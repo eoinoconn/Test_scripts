@@ -3,12 +3,12 @@
 import keras
 import numpy as np
 import keras.backend as K
-from keras.utils import np_utils, plot_model
+from keras.utils import np_utils
 from keras.datasets import cifar10
 from keras.models import Sequential
 from keras.models import load_model
 from keras import regularizers, optimizers
-from keras.layers import Conv2D, MaxPooling2D, AvergaePooling2D
+from keras.layers import Conv2D, MaxPooling2D
 from keras.preprocessing.image import ImageDataGenerator
 from keras.initializers import glorot_normal, RandomNormal, Zeros
 from keras.layers import Dense, Activation, Flatten, Dropout, BatchNormalization
@@ -41,26 +41,22 @@ datagen.fit(x_train)
 def create_model(s = 2, weight_decay = 1e-2):
     model = Sequential()
 
-    act = 'relu'
+	act = 'relu'
 	
     # Block 1
-    model.add(Conv2D(64, (3,3), strides=1, padding='same', kernel_initializer=glorot_normal(), input_shape=x_train.shape[1:]))
+    model.add(Conv2D(64, (3,3), padding='valid', kernel_initializer=glorot_normal(), input_shape=x_train.shape[1:]))
     model.add(Activation(act))
-    model.add(Dropout(0.2))
     model.add(MaxPooling2D(pool_size=(4,4), strides=1))
-		
+    
     # Block 2
-    model.add(Conv2D(32, (3,3), padding='same', kernel_initializer=glorot_normal()))
-    model.add(BatchNormalization())
+    model.add(Conv2D(32, (2,2), padding='valid', kernel_initializer=glorot_normal()))
     model.add(Activation(act))
-    model.add(Dropout(0.2))
     model.add(AveragePooling2D(pool_size=(5,5), strides=5))
     
-    
+   
     # Final Classifier
     model.add(Flatten())
-    model.add(Dense(256, activation='relu')
-    model.add(Dropout(0.5))
+	model.add(Dense(256, activation='relu'))
     model.add(Dense(num_classes, activation='softmax'))
 
     return model
@@ -68,11 +64,11 @@ def create_model(s = 2, weight_decay = 1e-2):
 if __name__ == "__main__":
 	# Prepare for training
 	model = create_model()
-	batch_size = 120
+	batch_size = 128
 	epochs = 25
 	train = {}
 
-	plot_model(model, to_file='simple_net_result.png')
+	#plot_model(model, to_file='full_cifar10.png')
 	
 	# First training for 50 epochs - (0-50)
 	opt_adm = keras.optimizers.Adadelta()
