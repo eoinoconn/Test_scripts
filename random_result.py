@@ -3,7 +3,7 @@
 import keras
 import numpy as np
 import keras.backend as K
-from keras.utils import np_utils
+from keras.utils import np_utils, plot_model
 from keras.datasets import cifar10
 from keras.models import Sequential
 from keras.models import load_model
@@ -41,7 +41,7 @@ datagen.fit(x_train)
 def create_model(s = 2, weight_decay = 1e-2):
     model = Sequential()
 
-	act = 'relu'
+    act = 'relu'
 	
     # Block 1
     model.add(Conv2D(64, (3,3), padding='same', kernel_initializer=glorot_normal(), input_shape=x_train.shape[1:]))
