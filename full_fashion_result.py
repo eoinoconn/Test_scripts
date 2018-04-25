@@ -31,9 +31,9 @@ y_test = np_utils.to_categorical(y_test,num_classes)
 datagen = ImageDataGenerator(
     featurewise_center=True,
     featurewise_std_normalization=True,
-    rotation_range=15,
-    width_shift_range=0.1,
-    height_shift_range=0.1,
+    # rotation_range=15,
+    # width_shift_range=0.1,
+    # height_shift_range=0.1,
     horizontal_flip=True
     )
 datagen.fit(x_train)
