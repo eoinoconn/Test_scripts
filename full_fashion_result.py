@@ -18,10 +18,10 @@ from keras.layers import Dense, Activation, Flatten, Dropout, BatchNormalization
 x_train = x_train.astype('float32')
 x_test = x_test.astype('float32')
 
-mean = np.mean(x_train,axis=(0,1,2,1))
-std = np.std(x_train,axis=(0,1,2,1))
-x_train = (x_train-mean)/(std+1e-7)
-x_test = (x_test-mean)/(std+1e-7)
+# mean = np.mean(x_train,axis=(0,1,2,1))
+# std = np.std(x_train,axis=(0,1,2,1))
+# x_train = (x_train-mean)/(std+1e-7)
+# x_test = (x_test-mean)/(std+1e-7)
 
 num_classes = 10
 y_train = np_utils.to_categorical(y_train,num_classes)
@@ -29,6 +29,8 @@ y_test = np_utils.to_categorical(y_test,num_classes)
 
 # Data augmentation
 datagen = ImageDataGenerator(
+    featurewise_center=True,
+    featurewise_std_normalization=True,
     rotation_range=15,
     width_shift_range=0.1,
     height_shift_range=0.1,
