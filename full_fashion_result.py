@@ -18,8 +18,8 @@ from keras.layers import Dense, Activation, Flatten, Dropout, BatchNormalization
 x_train = x_train.astype('float32')
 x_test = x_test.astype('float32')
 
-mean = np.mean(x_train,axis=(0,1,2,3))
-std = np.std(x_train,axis=(0,1,2,3))
+mean = np.mean(x_train,axis=(0,1,2,1))
+std = np.std(x_train,axis=(0,1,2,1))
 x_train = (x_train-mean)/(std+1e-7)
 x_test = (x_test-mean)/(std+1e-7)
 
