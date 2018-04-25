@@ -41,7 +41,7 @@ datagen.fit(x_train)
 def create_model(s = 2, weight_decay = 1e-2):
     model = Sequential()
 
-	act = 'relu'
+    act = 'relu'
 	
     # Block 1
     model.add(Conv2D(64, (3,3), padding='valid', kernel_initializer=glorot_normal(), input_shape=x_train.shape[1:]))
