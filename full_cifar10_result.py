@@ -8,7 +8,7 @@ from keras.datasets import cifar10
 from keras.models import Sequential
 from keras.models import load_model
 from keras import regularizers, optimizers
-from keras.layers import Conv2D, MaxPooling2D
+from keras.layers import Conv2D, MaxPooling2D, AveragePooling2D
 from keras.preprocessing.image import ImageDataGenerator
 from keras.initializers import glorot_normal, RandomNormal, Zeros
 from keras.layers import Dense, Activation, Flatten, Dropout, BatchNormalization
