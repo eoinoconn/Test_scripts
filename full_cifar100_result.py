@@ -3,12 +3,12 @@
 import keras
 import numpy as np
 import keras.backend as K
-from keras.utils import np_utils
+from keras.utils import np_utils, plot_model
 from keras.datasets import cifar10
 from keras.models import Sequential
-from keras.models import load_model
+from keras.models import load_model, Model
 from keras import regularizers, optimizers
-from keras.layers import Conv2D, MaxPooling2D
+from keras.layers import Conv2D, MaxPooling2D, Input, concatenate, AveragePooling2D
 from keras.preprocessing.image import ImageDataGenerator
 from keras.initializers import glorot_normal, RandomNormal, Zeros
 from keras.layers import Dense, Activation, Flatten, Dropout, BatchNormalization
@@ -39,25 +39,25 @@ datagen.fit(x_train)
 
 # Define Model architecture
 def create_model(s = 2, weight_decay = 1e-2):
-    model = Input(32, 32, 3)
-
-	act = 'relu'
+    input_layer = Input((32, 32, 3))
+    model = input_layer
+    act = 'relu'
 	
-	tower_1 = Conv2D(64, (1, 1), padding='same', activation='relu')(model)
-	tower_1 = Conv2D(64, (3, 3), padding='same', activation='relu')(tower_1)
-	tower_2 = Conv2D(64, (1, 1), padding='same', activation='relu')(model)
-	tower_2 = Conv2D(64, (5, 5), padding='same', activation='relu')(tower_2)
-	tower_3 = MaxPooling2D((3, 3), strides=(1, 1), padding='same')(model)
-	tower_3 = Conv2D(64, (1, 1), padding='same', activation='relu')(tower_3)
-	tower_4 = Conv2D(64, (1, 1), padding='same', activation='relu')(model)
-	model = concatenate([tower_1, tower_2, tower_3, tower_4], axis=3)
+    tower_1 = Conv2D(64, (1, 1), padding='same', activation='relu')(model)
+    tower_1 = Conv2D(64, (3, 3), padding='same', activation='relu')(tower_1)
+    tower_2 = Conv2D(64, (1, 1), padding='same', activation='relu')(model)
+    tower_2 = Conv2D(64, (5, 5), padding='same', activation='relu')(tower_2)
+    tower_3 = MaxPooling2D((3, 3), strides=(1, 1), padding='same')(model)
+    tower_3 = Conv2D(64, (1, 1), padding='same', activation='relu')(tower_3)
+    tower_4 = Conv2D(64, (1, 1), padding='same', activation='relu')(model)
+    model = concatenate([tower_1, tower_2, tower_3, tower_4], axis=3)
 
-	model = Conv2D(32, (4,4), stride=1, padding='same', kernel_initializer=glorot_normal())(model)
-	model = AvgPooling2D(pool_size=(3,3), strides=2)(model)
-	model = BatchNormalization(model)
-	model = Flatten()(model)
+    model = Conv2D(32, (4,4), strides=1, padding='same', kernel_initializer=glorot_normal())(model)
+    model = AveragePooling2D(pool_size=(3,3), strides=2)(model)
+    model = BatchNormalization()(model)
+    model = Flatten()(model)
     model = Dense(num_classes, activation='softmax')(model)
-    return model
+    return Model(inputs=input_layer, outputs=model)
 
 if __name__ == "__main__":
 	# Prepare for training

@@ -3,7 +3,7 @@
 import keras
 import numpy as np
 import keras.backend as K
-from keras.utils import np_utils
+from keras.utils import np_utils, plot_model
 from keras.datasets import cifar10
 from keras.models import Sequential
 from keras.models import load_model
@@ -41,7 +41,7 @@ datagen.fit(x_train)
 def create_model(s = 2, weight_decay = 1e-2):
     model = Sequential()
 
-	act = 'relu'
+    act = 'relu'
 	
     # Block 1
     model.add(Conv2D(64, (3,3), strides=1, padding='same', kernel_initializer=glorot_normal(), input_shape=x_train.shape[1:]))
@@ -87,7 +87,7 @@ def create_model(s = 2, weight_decay = 1e-2):
     model.add(BatchNormalization())
     model.add(Activation(act))
     model.add(Dropout(0.2))
-	model.add(MaxPooling2D(pool_size=(2,2), strides=2))
+    model.add(MaxPooling2D(pool_size=(2,2), strides=2))
     
     
     # Block 8
@@ -115,7 +115,7 @@ def create_model(s = 2, weight_decay = 1e-2):
     model.add(Conv2D(2048, (1,1), padding='same', kernel_initializer=glorot_normal()))
     model.add(Activation(act))
     model.add(Dropout(0.2))
-	model.add(MaxPooling2D(pool_size=(2,2), strides=2))
+    model.add(MaxPooling2D(pool_size=(2,2), strides=2))
     
     # Block 12  
     model.add(Conv2D(256, (1,1), padding='same', kernel_initializer=glorot_normal()))
