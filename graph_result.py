@@ -43,16 +43,32 @@ def create_model(s = 2, weight_decay = 1e-2):
     model = input_layer
     act = 'relu'
 	
-    tower_1 = Conv2D(64, (1, 1), padding='same', activation='relu')(model)
-    tower_1 = Conv2D(64, (3, 3), padding='same', activation='relu')(tower_1)
-    tower_2 = Conv2D(64, (1, 1), padding='same', activation='relu')(model)
-    tower_2 = Conv2D(64, (5, 5), padding='same', activation='relu')(tower_2)
-    model = concatenate([tower_1, tower_2], axis=3)
+    conv_1837 = Conv2D(16, (1, 1), strides=1, padding='same', activation='relu')(model)
+    conv_1837 = BatchNormalization()(conv_1837)
+    conv_1837 = Dropout(0.7)(conv_1837)
+    conv_1837 = AveragePooling2D((2, 2), strides=2)(conv_1837)
+	
+	
+    conv_1836 = Conv2D(256, (3, 3), strides=4, padding='same', activation='relu')(conv_1835)
+    conv_1836 = BatchNormalization()(conv_1836)
+    conv_1836 = Dropout(0.3)(conv_1836)
+    conv_1836 = AveragePooling2D((3, 3), strides=2)(conv_1836)
 
-    tower_3 = Conv2D(64, (3, 3), padding='same', activation='relu')(input)
-    model = concatenate([tower_3, model], axis=3)
+	concat = concatenate([conv_1836, conv_1837], axis=3)
+	
+    conv_1835 = Conv2D(128, (2, 2), strides=2, padding='same', activation='relu')(concat)
+    conv_1835 = BatchNormalization()(conv_1835)
+    conv_1835 = Dropout(0.7)(conv_1835)
+    conv_1835 = AveragePooling2D((3, 3), strides=1)(conv_1835)
+
+	
+    model = concatenate([conv_1835, conv_1837], axis=3)
+
     model = Flatten()(model)
-    model = Dense(num_classes, activation='softmax')(model)
+    model = Dense(256, activation='relu')(model)
+    model = Dense(128, activation='relu')(model)
+    model = Dense(265, activation='relu')(model)
+    model = Dense(num_classes, activation='relu')(model)
     return Model(inputs=input_layer, outputs=model)
 
 if __name__ == "__main__":
