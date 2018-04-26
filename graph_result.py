@@ -49,20 +49,22 @@ def create_model(s = 2, weight_decay = 1e-2):
     conv_1837 = AveragePooling2D((2, 2), strides=2)(conv_1837)
 	
 	
-    conv_1836 = Conv2D(256, (3, 3), strides=4, padding='same', activation='relu')(conv_1835)
+    conv_1836 = Conv2D(256, (3, 3), strides=4, padding='same', activation='relu')(conv_1837)
     conv_1836 = BatchNormalization()(conv_1836)
     conv_1836 = Dropout(0.3)(conv_1836)
     conv_1836 = AveragePooling2D((3, 3), strides=2)(conv_1836)
 
-	concat = concatenate([conv_1836, conv_1837], axis=3)
-	
+    pool = MaxPooling2D((12,12), strides=7)(conv_1837)
+
+    concat = concatenate([conv_1836, pool], axis=3)
+    print("here")
     conv_1835 = Conv2D(128, (2, 2), strides=2, padding='same', activation='relu')(concat)
     conv_1835 = BatchNormalization()(conv_1835)
     conv_1835 = Dropout(0.7)(conv_1835)
-    conv_1835 = AveragePooling2D((3, 3), strides=1)(conv_1835)
+    conv_1835 = AveragePooling2D((1, 1), strides=1)(conv_1835)
 
 	
-    model = concatenate([conv_1835, conv_1837], axis=3)
+    model = concatenate([conv_1835, pool], axis=3)
 
     model = Flatten()(model)
     model = Dense(256, activation='relu')(model)
@@ -78,7 +80,7 @@ if __name__ == "__main__":
 	epochs = 25
 	train = {}
 
-	#plot_model(model, to_file='full_cifar100_result.png')
+	plot_model(model, to_file='graph_result.png')
 	
 	# First training for 50 epochs - (0-50)
 	opt_adm = keras.optimizers.Adadelta()

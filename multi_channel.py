@@ -45,15 +45,10 @@ def create_model(s = 2, weight_decay = 1e-2):
 	
     tower_1 = Conv2D(64, (1, 1), padding='same', activation='relu')(model)
     tower_1 = Conv2D(64, (3, 3), padding='same', activation='relu')(tower_1)
-    tower_2 = Conv2D(64, (1, 1), padding='same', activation='relu')(model)
+    tower_2 = Conv2D(64, (1, 1), padding='same', activation='relu')(tower_1)
     tower_2 = Conv2D(64, (5, 5), padding='same', activation='relu')(tower_2)
-    model = concatenate([tower_1, tower_2], axis=3)
 
-    tower_3 = Conv2D(64, (3, 3), padding='same', activation='relu')(input)
-    model = concatenate([tower_3, model], axis=3)
-    model = Flatten()(model)
-    model = Dense(num_classes, activation='softmax')(model)
-    return Model(inputs=input_layer, outputs=model)
+    return Model(inputs=input_layer, outputs=tower_2)
 
 if __name__ == "__main__":
 	# Prepare for training
@@ -62,7 +57,7 @@ if __name__ == "__main__":
 	epochs = 25
 	train = {}
 
-	#plot_model(model, to_file='full_cifar100_result.png')
+	plot_model(model, to_file='multi_channell.png')
 	
 	# First training for 50 epochs - (0-50)
 	opt_adm = keras.optimizers.Adadelta()
