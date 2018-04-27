@@ -3,7 +3,7 @@
 import keras
 import numpy as np
 import keras.backend as K
-from keras.utils import np_utils
+from keras.utils import np_utils, plot_model
 from keras.datasets import cifar10
 from keras.models import Sequential
 from keras.models import load_model
@@ -64,11 +64,12 @@ def create_model(s = 2, weight_decay = 1e-2):
 if __name__ == "__main__":
 	# Prepare for training
 	model = create_model()
-	batch_size = 128
+	model.summary()
+        batch_size = 128
 	epochs = 25
 	train = {}
 
-	#plot_model(model, to_file='full_cifar10.png')
+	plot_model(model, to_file='full_cifar10.png')
 	
 	# First training for 50 epochs - (0-50)
 	opt_adm = keras.optimizers.Adadelta()
